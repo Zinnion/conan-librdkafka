@@ -1,0 +1,3 @@
+/home/mauro/zinnion/conan-librdkafka/test_package/build/7f6cc68115e0d1c58c111cf15e9636a11456d971/CMakeFiles/rebuild_cache.dir
+/home/mauro/zinnion/conan-librdkafka/test_package/build/7f6cc68115e0d1c58c111cf15e9636a11456d971/CMakeFiles/test_package.dir
+/home/mauro/zinnion/conan-librdkafka/test_package/build/7f6cc68115e0d1c58c111cf15e9636a11456d971/CMakeFiles/edit_cache.dir

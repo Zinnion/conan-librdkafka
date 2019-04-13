@@ -1,12 +1,9 @@
 #include <string>
-#include "rdkafkacpp_int.h"
+#include <iostream>
+#include "librdkafka/rdkafkacpp.h"
 
 int main()
 {
- version_str();
+ std::cout << RdKafka::version_str().c_str() << std::endl;
  return 0;
 }
-
-std::string RdKafka::version_str () {
-  return std::string(rd_kafka_version_str());
-}}

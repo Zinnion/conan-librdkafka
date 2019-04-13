@@ -1,63 +1,53 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import os
-from conans import ConanFile, tools, AutoToolsBuildEnvironment, CMake
-from conans.model.version import Version
+from conans import ConanFile, AutoToolsBuildEnvironment, tools
 from conans.errors import ConanInvalidConfiguration
 
 
-class librdkafkaRecipe(ConanFile):
+class ReadLineConan(ConanFile):
     name = "librdkafka"
     version = "1.0.0"
-    settings = "os", "compiler", "build_type", "arch", "cppstd"
-    description = "The Apache Kafka C/C++ libraryL"
-    url = "https://github.com/Zinnion/conan-librdkafka"
+    description = "The Apache Kafka C/C++ library"
+    url = "https://github.com/bincrafters/conan-readline"
     homepage = "https://github.com/edenhill/librdkafka"
-    author = "Zinnion <mauro@zinnion.com>"
-    license = "BSD-3-Clause"
     topics = ("conan", "librdkafka", "kafka", "streaming")
-    generators = "cmake"
-    exports = "LICENSE.md"
-    exports_sources = "CMakeLists.txt"
+    author = "Zinnion <mauro@zinnion.com>"
+    license = "GPL-3"
+    exports = ["LICENSE.md"]
+    settings = "os", "arch", "compiler", "build_type"
+    options = {"shared": [True, False], "fPIC": [True, False]}
+    default_options = {"shared": False, "fPIC": True}
     _source_subfolder = "source_subfolder"
-    _build_subfolder = "build_subfolder"
     _autotools = None
 
-    def configure(self):
-        compiler_version = Version(self.settings.compiler.version.value)
-
-        if self.settings.os == "Windows" and \
-           self.settings.compiler == "Visual Studio" and \
-           compiler_version < "14":
-            raise ConanInvalidConfiguration(
-                "Your MSVC version is too old, librdkafka requires C++14")
-
-        if self.settings.os == "Macos" and \
-           self.settings.compiler == "apple-clang" and \
-           compiler_version < "8.0":
-            raise ConanInvalidConfiguration(("librdkafka requires thread-local storage features,"
-                                             " could not be built by apple-clang < 8.0"))
+    def config_options(self):
+        if self.settings.os == "Windows":
+            del self.options.fPIC
+        if self.settings.os == "Macos":
+            del self.options.shared
 
     def source(self):
         sha256 = "b00a0d9f0e8c7ceb67b93b4ee67f3c68279a843a15bf4a6742eb64897519aa09"
-        tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage,
-                                                  self.version), sha256=sha256)
+        tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage,self.version), sha256=sha256)
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
 
-    def configure_cmake(self):
-        cmake = CMake(self)
-        cmake.configure()
-        return cmake
+    def _configure_autotools(self):
+        if not self._autotools:
+            configure_args = []
+            self._autotools = AutoToolsBuildEnvironment(self)
+            self._autotools.configure(args=configure_args)
+        return self._autotools
 
     def build(self):
-        cmake = self.configure_cmake()
-        cmake.build()
+        with tools.chdir(self._source_subfolder):
+            autotools = self._configure_autotools()
+            autotools.make()
 
     def package(self):
-        cmake = self.configure_cmake()
-        cmake.install()
+        self.copy("COPYING", dst="licenses", src=self._source_subfolder)
+        with tools.chdir(self._source_subfolder):
+            autotools = self._configure_autotools()
+            autotools.install()
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
