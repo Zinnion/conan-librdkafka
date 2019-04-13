@@ -14,16 +14,10 @@ class ReadLineConan(ConanFile):
     license = "GPL-3"
     exports = ["LICENSE.md"]
     settings = "os", "arch", "compiler", "build_type"
-    options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = {"shared": False, "fPIC": True}
+    options = {"shared": [True, False] }
+    default_options = {"shared": False }
     _source_subfolder = "source_subfolder"
     _autotools = None
-
-    def config_options(self):
-        if self.settings.os == "Windows":
-            del self.options.fPIC
-        if self.settings.os == "Macos":
-            del self.options.shared
 
     def source(self):
         sha256 = "b00a0d9f0e8c7ceb67b93b4ee67f3c68279a843a15bf4a6742eb64897519aa09"
