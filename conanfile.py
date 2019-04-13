@@ -25,6 +25,10 @@ class ReadLineConan(ConanFile):
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
 
+    def build_requirements(self):
+        self.build_requires("OpenSSL/1.0.2o@conan/stable")
+        self.build_requires("zlib/1.2.11@conan/stable")
+
     def _configure_autotools(self):
         if not self._autotools:
             configure_args = []
