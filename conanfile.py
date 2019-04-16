@@ -7,7 +7,7 @@ class ReadLineConan(ConanFile):
     name = "librdkafka"
     version = "1.0.0"
     description = "The Apache Kafka C/C++ library"
-    url = "https://github.com/bincrafters/conan-readline"
+    url = "https://github.com/zinnion/conan-librdkafka"
     homepage = "https://github.com/edenhill/librdkafka"
     topics = ("conan", "librdkafka", "kafka", "streaming")
     author = "Zinnion <mauro@zinnion.com>"
@@ -26,8 +26,8 @@ class ReadLineConan(ConanFile):
         os.rename(extracted_dir, self._source_subfolder)
 
     def build_requirements(self):
-        self.build_requires("OpenSSL/1.0.2o@conan/stable")
-        self.build_requires("zlib/1.2.11@conan/stable")
+        self.build_requires("OpenSSL/1.1.1b@zinnion/stable")
+        self.build_requires("zlib/1.2.11@zinnion/stable")
 
     def _configure_autotools(self):
         if not self._autotools:
