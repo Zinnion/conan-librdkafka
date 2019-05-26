@@ -49,6 +49,7 @@ class ReadLineConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.libs.append("rdkafka")
         if self.settings.os == "Linux":
             self.cpp_info.libs.append("pthread")
         elif self.settings.os == "Windows":
