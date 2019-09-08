@@ -5,7 +5,7 @@ from conans.errors import ConanInvalidConfiguration
 
 class ReadLineConan(ConanFile):
     name = "librdkafka"
-    version = "1.0.1"
+    version = "1.1.0"
     description = "The Apache Kafka C/C++ library"
     url = "https://github.com/zinnion/conan-librdkafka"
     homepage = "https://github.com/edenhill/librdkafka"
@@ -20,7 +20,7 @@ class ReadLineConan(ConanFile):
     _autotools = None
 
     def source(self):
-        sha256 = "b2a2defa77c0ef8c508739022a197886e0644bd7bf6179de1b68bdffb02b3550"
+        sha256 = "123b47404c16bcde194b4bd1221c21fdce832ad12912bd8074f88f64b2b86f2b"
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage,self.version), sha256=sha256)
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
